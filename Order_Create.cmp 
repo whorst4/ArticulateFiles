@@ -1,0 +1,55 @@
+<aura:component controller="Order_CreateController" implements="lightning:actionOverride,force:hasRecordId,force:hasSObjectName,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="Order" type="Order"/>
+    <aura:attribute name="creatingOrder" type="Boolean" default="true"/>
+	
+    <lightning:notificationsLibrary aura:id="notificationsLibrary"/>
+    
+    <div class="demo-only demo-only_viewport" style="height:700px">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium slds-modal__container" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Order</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    
+                    <div class="slds-p-bottom_large slds-p-left_large slds-align_absolute-center">
+                        <aura:if isTrue="{!v.creatingOrder}">
+                            <lightning:recordEditForm aura:id="form"
+                                                      recordId="{!v.recordId}"
+                                                      objectApiName="Order"     
+                                                      onload="{!c.handleLoad}"
+                                                      onsubmit="{!c.handleSubmit}"
+                                                      onsuccess="{!c.handleSuccess}"
+                                                      onerror="{!c.handleError}"
+                                                      class="slds-card__body_inner">
+                                <lightning:messages />
+                                <div class="slds-grid slds-gutters slds-grid_align-center slds-wrap">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning:inputField aura:id="accountIdField" fieldName="AccountId" />
+                                        <lightning:inputField aura:id="opportunityIdField" fieldName="OpportunityId" />
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning:inputField aura:id="startDateField" fieldName="EffectiveDate" />
+                                        <lightning:inputField aura:id="statusField" fieldName="Status" />
+                                    </div>
+                                </div>
+                                <div class="slds-m-top_medium slds-float_right">
+                                    <lightning:button aura:id="submit" variant="brand" type="submit" label="Add Products" class="slds-m-top_medium slds-float_right" />
+                                    <lightning:button aura:id="cancel" variant="destructive" label="Cancel" class="slds-m-top_medium" onclick="{!c.handleCancel}" />
+                                </div>
+                            </lightning:recordEditForm>
+                            
+                            <aura:set attribute="else">
+                                <lightning:spinner />
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+    
+</aura:component>

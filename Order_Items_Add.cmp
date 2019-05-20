@@ -1,0 +1,59 @@
+<aura:component controller="Order_CreateController" implements="lightning:actionOverride,force:hasRecordId,force:hasSObjectName,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="orderId" type="Id" />
+    <aura:attribute name="OrderProduct" type="OrderItem"/>
+    <aura:attribute name="OrderProductId" type="Id"/>
+    <aura:attribute name="loadingItems" type="Boolean" default="true"/>
+    <aura:attribute name="AddPCItem" type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.loadData}"/>
+    
+    
+    <div class="demo-only demo-only_viewport" style="height:700px">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium slds-modal__container" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Order</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    
+                    <div class="slds-p-bottom_large slds-p-left_large slds-align_absolute-center">
+                        <aura:if isTrue="{!v.loadingItems}">
+                            
+                            <lightning:spinner />
+                            <aura:set attribute="else">
+                                <lightning:recordEditForm aura:id="orderProdForm"
+                                                          onload="{!c.handleLoad}"
+                                                          onsubmit="{!c.handleSubmit}"
+                                                          onsuccess="{!c.handleSuccess}"
+                                                          recordId="{!v.OrderProductId}"
+                                                          objectApiName="OrderItem">
+                                    <div class="slds-grid slds-gutters slds-grid_align-center slds-wrap">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField aura:id="productIdField" fieldName="Product2Id" disabled="true" />
+                                            <lightning:inputField aura:id="quantityField" fieldName="Quantity" />
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <lightning:inputField aura:id="unitPriceField" fieldName="UnitPrice" />
+                                            <lightning:inputField aura:id="listPriceField" fieldName="ListPrice" disabled="true"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <lightning:inputField aura:id="descriptionField" fieldName="Description" />
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <lightning:input type="checkbox" aura:id="addPC" label="Include Product C" name="input2" checked="{!v.AddPCItem}" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-m-top_medium slds-float_right">
+                                        <lightning:button aura:id="submit" variant="brand" type="submit" label="Submit" class="slds-m-top_medium" />
+                                        <lightning:button aura:id="cancel" variant="destructive" label="Cancel" class="slds-m-top_medium" onclick="{!c.handleCancel}" />
+                                    </div>
+                                </lightning:recordEditForm>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</aura:component>

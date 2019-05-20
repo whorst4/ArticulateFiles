@@ -1,0 +1,8 @@
+.THIS .red-border {
+    border: 2px solid #c23934;
+}
+.THIS.slds-modal__container{
+       max-width: 80% !important;
+       width: 60% !important;
+
+}
